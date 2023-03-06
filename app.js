@@ -7,57 +7,61 @@ const mongoose = require("mongoose");
 app.use(express.json());
 app.use(cors());
 
+
+// Schema --> Model --> Query 
+
 // schema Design 
-const productSchema= mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, "Please provide your name for this product"],
-        trim: true, //reduce extrea  space before and after this -name
-        unique: [true, "Name must be unique"],
-        minLength: [3, "Name must be at least 3 characters"],
-        maxLength: [100, "Name is too large"],
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    price:{
-        type: Number,
-        required : true,
-        min: [0, "Price Can't be Negative"]
-    },
-    unit:{
-        type : String,
-        required : true,
-        enum:{
-            value: ["kg", "litre", "pcs"],
-            message: "Unit value can't be {VALUE}, must be kg/litre/pcs"
+const productSchema =  mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Please provide your name for this product"],
+    trim: true,
+    unique: [true, "Name must be unique"],
+    minLength: [3, "Name must be at least 3 characters"],
+    maxLength: [100, "Name is too large"]
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  price: {
+    type: Number,
+    required : true,
+    min: [0, "Price Can't be Negative"]
+  },
+  unit: {
+    type : String,
+    required : true,
+    enum:{
+      values: ["kg", "litre", "pcs"],
+      message: "Unit value can't be {VALUE}, must be kg/litre/pcs"
+    }
+  },
+  quantity:{
+    type: Number,
+    required: true,
+    min: [0, "Quantity can't be negative"],
+    validate:{
+      validator: (value) =>{
+        const isInteger= Number.isInteger(value); 
+        if(isInteger){
+            return true;
+        }else{
+            return false;
         }
+      }
     },
-    quentity:{
-        type: Number,
-        required: true,
-        min: [0, "Quantity can't be negative"],
-        validate:{
-            validator: (value)=>{
-                const isInteger=Number.isInteger(value); 
-                if(isInteger){
-                    return true;
-                }else{
-                    return false;
-                }
-            }
-        },
-        messages: "Quantity must be an integer" // if validator returns false- then return this message
-    },
-    status: {
-        type: String,
-        required: true,
-        enum: {
-            value: ["in-stock", "out-of-stock","discountinued" ],
-            message: "Status can't be {VALUE}",
-        }
-    },
+    message: "Quantity must be an integer"
+  },
+  status: {
+      type: String,
+      required: true,
+      enum: {
+          values: ["in-stock", "out-of-stock","discontinued" ],
+          message: "Status can't be {VALUE}"
+      }
+  }
+
     // createdAt: {
     //     type: Date,
     //     default: Date.now,
@@ -66,25 +70,65 @@ const productSchema= mongoose.Schema({
     //     type: Date,
     //     default: Date.now,
     // },
-    supplier:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Supplier"
-    },
-    categories:[{
-        name: {
-            type:String,
-            required:true
-        },
-        _id: mongoose.Schema.Types.ObjectId
-    }]
+    
+    // supplier:{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Supplier"
+    // },
+    // categories:[{
+    //     name: {
+    //         type:String,
+    //         required:true
+    //     },
+    //     _id: mongoose.Schema.Types.ObjectId
+    // }]
 },{
     timestamps: true, //mongoose schema automatically generate: create and update time 
     // _id:false // id can't go to mongoDB 
-})
+});
+
+
+
+
+//================ Model Design ===============
+// const Product=mongoose.model('product',productSchema);
+
 
 
 app.get("/", (req, res) => {
-  res.send("Route is working! YaY!");
+  res.send("Welcome to the server!");
+});
+
+//================ Query Design ===============
+
+// posting data to database 
+app.post('/api/v1/product', async (req, res, next) => {
+  console.log(req.body)
+  try {
+    //  create or save
+    // const result = await Product.create(req.body)
+    
+    // save
+    const product = new Product(req.body);
+    // instnce creation --> Do something --> save()
+    if(product.quantity ==0){
+      product.status= 'out-of-stock';
+    }
+    const result = await product.save();
+
+    
+    res.status(200).json({
+      status: 'success',
+      message: 'Data inserted successfully!',
+      data: result
+    });
+  } catch (error) {
+      res.status(400).json({
+        status: 'error',
+        message: 'Data is not inserted',
+        error: error.message
+      })
+    }
 });
 
 
