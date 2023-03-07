@@ -11,7 +11,7 @@ app.use(cors());
 // Schema --> Model --> Query 
 
 // schema Design 
-const productSchema =  mongoose.Schema({
+const productSchema = new  mongoose.Schema({
   name: {
     type: String,
     required: [true, "Please provide your name for this product"],
@@ -82,16 +82,37 @@ const productSchema =  mongoose.Schema({
     //     },
     //     _id: mongoose.Schema.Types.ObjectId
     // }]
-},{
-    timestamps: true, //mongoose schema automatically generate: create and update time 
-    // _id:false // id can't go to mongoDB 
+}, 
+{
+  timestamps: true, //mongoose schema automatically generate: create and update time 
+  // _id:false // id can't go to mongoDB 
 });
+
+// mongoose middleware for saving data:pre/post
+productSchema.pre('save',function (next) {
+  console.log('Before saving data');
+  if(this.quantity == 0){
+    this.status='out-of-stock';
+  }
+
+  next();
+})
+
+// productSchema.post('save',function (doc,next) {
+//   console.log("After saving data");
+
+//   next();
+// });
+
+productSchema.methods.logger= function () {
+  console.log(`Data saved for ${this.name}`);
+}
 
 
 
 
 //================ Model Design ===============
-// const Product=mongoose.model('product',productSchema);
+const Product=mongoose.model('Product',productSchema);
 
 
 
@@ -116,7 +137,6 @@ app.post('/api/v1/product', async (req, res, next) => {
     }
     const result = await product.save();
 
-    
     res.status(200).json({
       status: 'success',
       message: 'Data inserted successfully!',
