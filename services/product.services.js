@@ -19,8 +19,28 @@ exports.updateProductService = async (productId, data) => {
   //   }
   // );
 
-  // 2nd option for updating product data
+  // *** update with (increase) operation
+  // const result = await Product.updateOne(
+  //   { _id: productId },
+  //   { $inc: data },
+  //   {
+  //     runValidators: true,
+  //   }
+  // );
+
+  //*** 2nd option for updating product data
   const product = await Product.findById(productId);
   const result = await product.set(data).save();
+
+  return result;
+};
+
+// Multiple/bulk update
+
+exports.bulkUpdateProductService = async (data) => {
+  
+  const result = await Product.updateMany({ _id: data.ids }, data.data, {
+    runValidators: true,
+  });
   return result;
 };
