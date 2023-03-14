@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/product.controller");
 
-router.route("/bulk-update").patch(productController.bulkUpdateProduct);
+router.route("/bulk-update").patch(productController.bulkUpdateProduct); // multiple data update
+router.route("/bulk-delete").delete(productController.bulkDeleteProduct); // multiple delete
 
 router
   .route("/")
