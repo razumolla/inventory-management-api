@@ -2,8 +2,9 @@ const Product = require("../models/Product");
 const {
   getProductsService,
   createProductService,
-  updateProductService,
+  updateProductByIdService,
   bulkUpdateProductService,
+  deleteProductByIdService,
 } = require("../services/product.services");
 
 exports.getProducts = async (req, res, next) => {
@@ -71,10 +72,10 @@ exports.createProduct = async (req, res, next) => {
 };
 
 // Update one product
-exports.updateProduct = async (req, res, next) => {
+exports.updateProductById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const result = await updateProductService(id, req.body);
+    const result = await updateProductByIdService(id, req.body);
 
     res.status(200).json({
       status: "success",
@@ -98,13 +99,33 @@ exports.bulkUpdateProduct = async (req, res, next) => {
 
     res.status(200).json({
       status: "success",
-      message: "Product update successfully",
+      message: "Multiple Product update successfully",
       data: result,
     });
   } catch (error) {
     res.status(400).json({
       status: "error",
       message: "Can't update the product",
+      error: error.message,
+    });
+  }
+};
+
+// delete single product By Id
+exports.deleteProductById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await deleteProductByIdService(id);
+
+    res.status(200).json({
+      status: "success",
+      message: "Product delete successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "error",
+      message: "Can't delete the product",
       error: error.message,
     });
   }

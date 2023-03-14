@@ -10,7 +10,7 @@ exports.createProductService = async (data) => {
   return product;
 };
 
-exports.updateProductService = async (productId, data) => {
+exports.updateProductByIdService = async (productId, data) => {
   // const result = await Product.updateOne(
   //   { _id: productId },
   //   { $set: data },
@@ -36,7 +36,6 @@ exports.updateProductService = async (productId, data) => {
 };
 
 // Multiple/bulk update
-
 exports.bulkUpdateProductService = async (data) => {
   // const result = await Product.updateMany({ _id: data.ids }, data.data, {
   //   runValidators: true,
@@ -51,3 +50,9 @@ exports.bulkUpdateProductService = async (data) => {
 
   return result;
 };
+
+// delete By id 
+exports.deleteProductByIdService = async (id) => {
+  const result = await Product.deleteOne({ _id: id });
+  return result;
+}
