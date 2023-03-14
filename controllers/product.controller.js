@@ -115,7 +115,23 @@ exports.bulkUpdateProduct = async (req, res, next) => {
 exports.deleteProductById = async (req, res, next) => {
   try {
     const { id } = req.params;
+    // check this id from databse by find operation
+    const isProductExist = await Product.exists({ _id: id });
+    if (!isProductExist) {
+      return res.status(400).json({
+        status: "failed",
+        error: "Product does not exist",
+      });
+    }
+
     const result = await deleteProductByIdService(id);
+
+    if (!result.deletedCount) {
+      return res.status(400).json({
+        status: "failed",
+        error: "Could't delete the product",
+      });
+    }
 
     res.status(200).json({
       status: "success",
