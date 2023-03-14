@@ -41,13 +41,14 @@ exports.getProducts = async (req, res, next) => {
 
 exports.createProduct = async (req, res, next) => {
   try {
-    //  (create) or save
+    //  (create:) or save
     // const result = await Product.create(req.body)
     const result = await createProductService(req.body);
     result.logger();
 
-    // create or (save)
-    //   const product = new Product(req.body)
+    // create or (save:)
+  
+    // const product = new Product(req.body)
     // instnce creation --> Do something --> save()
     // if(product.quantity ==0){
     // product.status= 'out-of-stock';
