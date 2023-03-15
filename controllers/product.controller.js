@@ -29,26 +29,40 @@ exports.getProducts = async (req, res, next) => {
     //Get data-> findById
     //const products=await Product.findById("6405d8f345e836b74021a6e1")
 
-    const filters = { ...req.query };
+    // ================== For multiple search  query =====================
+    // input query: http://localhost:5000/api/v1/product?status=out-of-stock&limit=1&page=3&sort=1
+
+    let filters = { ...req.query };
     // sort, page, limit -> exclude (when only needed only status field)
     const excludeFields = ["sort", "page", "limit"];
     excludeFields.forEach((field) => delete filters[field]);
 
+    // ================== advance filtering with operators: using regex===============
+
+    //Required: { price:{ $gt: 100}}
+    //input search: http://localhost:5000/api/v1/product?price[gt]=180  clg:{ price: { gt: '180' } }
+    // gt,lt, gte, lte, ne
+    let filterString = JSON.stringify(filters);
+    filterString = filterString.replace(
+      /\b(gt|gte|lt|lte|ne| in)\b/g,
+      (match) => `$${match}`
+    );
+    filters = JSON.parse(filterString); //then we get: { price: { '$lte': '180' } }
+
+    // ------ Right use of filters: Query by sort or field or limit of -------
     const queries = {};
     if (req.query.sort) {
-      // search query: sort=name,quantity --> output sortBy: "name quantity"
+      // search query: sort=name,quantity --> output: sortBy: "name quantity"
       const sortBy = req.query.sort.split(",").join("  ");
       queries.sortBy = sortBy;
     }
-
     const fields = {};
     if (req.query.fields) {
       const fields = req.query.fields.split(",").join(" ");
       queries.fields = fields;
-      console.log(fields);
     }
 
-    const products = await getProductsService(filters,queries); //Business Logic
+    const products = await getProductsService(filters, queries); //Business Logic
     res.status(200).json({
       status: "success",
       data: products,
