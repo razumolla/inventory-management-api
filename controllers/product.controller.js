@@ -28,7 +28,17 @@ exports.getProducts = async (req, res, next) => {
 
     //Get data-> findById
     //const products=await Product.findById("6405d8f345e836b74021a6e1")
-    const products = await getProductsService(req.query.limit); //Business Logic
+
+    const queryObject = { ...req.query };
+    // sort, page, limit -> exclude (when only needed only status field)
+    const excludeFields = ["sort", "page", "limit"];
+
+    excludeFields.forEach((field) => delete queryObject[field]);
+
+    // console.log("original", req.query);
+    // console.log("after query", queryObject);
+
+    const products = await getProductsService(queryObject); //Business Logic
     res.status(200).json({
       status: "success",
       data: products,
