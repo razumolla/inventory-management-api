@@ -56,10 +56,25 @@ exports.getProducts = async (req, res, next) => {
       const sortBy = req.query.sort.split(",").join("  ");
       queries.sortBy = sortBy;
     }
-    const fields = {};
+
     if (req.query.fields) {
       const fields = req.query.fields.split(",").join(" ");
       queries.fields = fields;
+    }
+    //================7.7 Paigination: ========================
+    // 50 product
+    // each page 10 product
+    // page 1--> 1-10
+    // page 2--> 11-20
+    // page 3--> 21-30   --> page 3 -> skip 1-20   -> skip kora lagbe =(3-1)= 2*10=20
+    // page 4--> 31-40   --> page 4 -> skip 1-30
+    // page 5--> 41-50
+    if (req.query.page) {
+      const { page = 1, limit = 10 } = req.query; // input page: "5", limit: "10"
+
+      const skip = (page - 1) * parseInt(limit);
+      queries.skip = skip;
+      queries.limit = parseInt(limit);
     }
 
     const products = await getProductsService(filters, queries); //Business Logic
