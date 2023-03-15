@@ -41,6 +41,13 @@ exports.getProducts = async (req, res, next) => {
       queries.sortBy = sortBy;
     }
 
+    const fields = {};
+    if (req.query.fields) {
+      const fields = req.query.fields.split(",").join(" ");
+      queries.fields = fields;
+      console.log(fields);
+    }
+
     const products = await getProductsService(filters,queries); //Business Logic
     res.status(200).json({
       status: "success",
