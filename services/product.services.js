@@ -3,6 +3,7 @@ const Product = require("../models/Product");
 exports.getProductsService = async (filters, queries) => {
   // const products = await Product.find({}).limit(+limit);
   // const products = await Product.find(query)
+  console.log( 'aa',filters, queries);
   const products = await Product.find(filters)
     .skip(queries.skip)
     .limit(queries.limit)

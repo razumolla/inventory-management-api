@@ -1,7 +1,6 @@
 {
   "name": "6-inventory-management",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node server",
@@ -17,5 +16,15 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^7.0.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/razumolla/6-inventory-management.git"
+  },
+  "bugs": {
+    "url": "https://github.com/razumolla/6-inventory-management/issues"
+  },
+  "homepage": "https://github.com/razumolla/6-inventory-management#readme",
+  "description": ""
 }
