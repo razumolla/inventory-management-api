@@ -8,6 +8,7 @@ app.use(cors());
 
 // routes
 const productRoute=require('./routes/product.route')
+const brandRoute=require('./routes/brand.route')
 
 app.get("/", (req, res) => {
   res.send("Welcome to the server!");
@@ -15,5 +16,6 @@ app.get("/", (req, res) => {
 
 // posting data to database 
 app.use('/api/v1/product', productRoute);
+app.use('/api/v1/brand', brandRoute);
 
 module.exports = app;
