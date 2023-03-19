@@ -1,4 +1,7 @@
-const { createStoreService } = require("../services/store.service");
+const {
+    createStoreService,
+    getStoreService
+} = require("../services/store.service");
 
 exports.createStore = async (req, res, next) => {
     try {
@@ -13,6 +16,22 @@ exports.createStore = async (req, res, next) => {
         res.status(400).json({
             status: "failed",
             error: "store can't created "
+        });
+    }
+}
+exports.getStore = async (req, res, next) => {
+    try {
+        const store = await getStoreService();
+
+        res.status(200).json({
+            message: "success",
+            error: " successfully get store data",
+            data: store
+        })
+    } catch (error) {
+        res.status(400).json({
+            status: "failed",
+            error: "can't get store data"
         });
     }
 }
