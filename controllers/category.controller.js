@@ -1,7 +1,8 @@
 const {
     createCategoryService,
     getCategoryService,
-    updateCategoryByIdService
+    updateCategoryByIdService,
+    getCategoryByIdService
 } = require("../services/category.service");
 
 exports.createCategory = async (req, res, next) => {
@@ -37,8 +38,25 @@ exports.getCategory = async (req, res, next) => {
         });
     }
 }
+exports.getCategoryById = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const category = await getCategoryByIdService(id);
 
-exports.updateCategory = async (req, res, next) => {
+        res.status(200).json({
+            message: "success",
+            error: " successfully get category",
+            data: category
+        })
+    } catch (error) {
+        res.status(400).json({
+            status: "failed",
+            error: " can't get category data "
+        });
+    }
+}
+
+exports.updateCategoryById = async (req, res, next) => {
     try {
         const { id } = req.params;
         const result = await updateCategoryByIdService(id, req.body);

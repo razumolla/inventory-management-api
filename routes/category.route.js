@@ -10,6 +10,7 @@ router
 
 router
     .route('/:id')
-    .patch(categoryController.updateCategory)
+    .get(categoryController.getCategoryById)
+    .patch(categoryController.updateCategoryById)
 
 module.exports = router;

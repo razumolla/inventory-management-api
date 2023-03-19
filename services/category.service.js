@@ -9,6 +9,10 @@ exports.getCategoryService = async () => {
     const category = await Category.find({});
     return category;
 }
+exports.getCategoryByIdService = async (id) => {
+    const category = await Category.findOne({_id:id});
+    return category;
+}
 
 exports.updateCategoryByIdService = async (id, data) => {
     const result = await Category.updateOne({ _id: id }, data, {
