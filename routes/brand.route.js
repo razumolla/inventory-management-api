@@ -11,6 +11,6 @@ router
 
     router.route("/:id")
       .get(brandController.getBrandById)
-    //   .patch(brandController.updateBrand);
+      .patch(brandController.updateBrandById);
 
 module.exports = router;
