@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-
+const validator = require("validator");
+const { ObjectId } = mongoose.Schema.Types;
 // Schema --> (Model) --> Query
 
 // schema Design
@@ -26,18 +27,19 @@ const productSchema = new mongoose.Schema(
         message: "Unit value can't be {VALUE}, must be kg/litre/pcs/bag",
       },
     },
+
     imageURLs: [{
       type: String,
-      required:true,
+      required: true,
       validate: {
         validator: (value) => {
-          if (!Array.isArray(value)) {
+          if(!Array.isArray(value)){
             return false;
           }
           let isValid = true;
           value.forEach(url => {
-            if (!validator.isURL(url)) {
-              isValid = false;
+            if(!validator.isURL(url)){
+              isValid =  false;
             }
           });
           return isValid;
