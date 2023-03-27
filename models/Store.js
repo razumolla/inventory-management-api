@@ -9,11 +9,22 @@ const storeSchema = mongoose.Schema({
     required: [true, "Please provide a store name"],
     lowercase: true,
     enum: {
-      values: ["dhaka", "chattogram", "rajshahi", "sylhet", "khulna", "barishal", "rangpur", "mymensingh"],
-      message: "{VALUE} is not a valid name"
-    }
+      values: [
+        "dhaka",
+        "chattogram",
+        "rajshahi",
+        "sylhet",
+        "khulna",
+        "barishal",
+        "rangpur",
+        "mymensingh"
+      ],
+      message: "{VALUE} is not a correct divition",
+    },
   },
-  description: String,
+  description: {
+    type: String,
+  },
   status: {
     type: String,
     enum: ["active", "inactive"],
