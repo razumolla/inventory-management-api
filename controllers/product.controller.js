@@ -214,3 +214,13 @@ exports.bulkDeleteProduct = async (req, res, next) => {
     });
   }
 };
+
+// file upload
+exports.fileUpload = async (req, res) => {
+  try {
+    // res.status(200).json(req.file); // for single image upload
+    res.status(200).json(req.files); // for multiple image upload
+  } catch (error) {
+    
+  }
+}
