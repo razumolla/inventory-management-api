@@ -4,7 +4,7 @@ const { ObjectId } = mongoose.Schema.Types;
 // Schema --> (Model) --> Query
 
 // schema Design
-const productSchema = new mongoose.Schema(
+const productSchema = mongoose.Schema(
   {
     name: {
       type: String,

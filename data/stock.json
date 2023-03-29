@@ -76,8 +76,9 @@
     },
     "sellCount": 90
   },
+
   {
-    "productId": "633476cce0259f4febbfc43a",
+    "productId": "64227d65a6afa67b20edc0f8",
     "name": "Fresh Chinigura Rice",
     "description": "Fresh Chinigura Rice. Fresh and Clean, Vacuum Packed. Fresh Chinigura Rice can be use in Biriyani, Polau, Firni, Kheer, Khichuri.",
     "imageURLs": [
@@ -85,21 +86,24 @@
     ],
     "unit": "kg",
     "price": "357",
+    "quantity": "2100",
+    "status": "in-stock",
     "category": "Rice",
     "brand": {
       "name": "Fresh",
-      "id": "6329f32f40244f2a44c85741"
+      "id": "6416958da59c20cf2099cd19"
     },
     "store": {
-      "name": "chattogram",
-      "id": "633412b419894112041a9018"
+      "name": "dhaka",
+      "id": "641729fc846fb6e3c4ae97e4"
     },
     "suppliedBy": {
       "name": "rasel ahmed",
-      "id": "63341cd73d8c200adc31b6bd"
+      "id": "6423bb061c8be37161be720a"
     },
     "sellCount": 17
   },
+
   {
     "productId": "633476cce0259f4febbfc43b",
     "name": "ACI Pure Miniket Rice Premium",
@@ -124,6 +128,7 @@
     },
     "sellCount": 103
   },
+
   {
     "productId": "633476cce0259f4febbfc43c",
     "name": "Fresh Fortified Soyabean Oil - 5ltr",
@@ -148,6 +153,7 @@
     },
     "sellCount": 20
   },
+
   {
     "productId": "633476cce0259f4febbfc43d",
     "name": "Rupchanda Fortified Soyabean Oil - 5ltr",

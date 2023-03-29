@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Schema.Types
+const validator = require("validator");
 
 const stockSchema = mongoose.Schema({
   productId: {
@@ -33,22 +34,9 @@ const stockSchema = mongoose.Schema({
   imageURLs: [{
     type: String,
     required: true,
-    validate: {
-      validator: (value) => {
-        if (!Array.isArray(value)) {
-          return false;
-        }
-        let isValid = true;
-        value.forEach(url => {
-          if (!validator.isURL(url)) {
-            isValid = false;
-          }
-        });
-        return isValid;
-      },
-      message: "Please provide valid image urls"
-    }
+    validate: [validator.isURL, "Please provide valid url(s)"]
   }],
+
   price: {
     type: Number,
     required: true,
@@ -75,7 +63,7 @@ const stockSchema = mongoose.Schema({
     }
   },
   status: {
-    type: string,
+    type: String,
     required: true,
     enum: {
       values: ["in-stock", "out-of-stock", "discontinued"],
@@ -109,24 +97,26 @@ const stockSchema = mongoose.Schema({
       type: ObjectId,
       ref: 'Supplier'
     }
+  },
+
+  sellCount: {
+    type: Number,
+    default: 0,
+    min: 0
   }
 
 }, {
   timestamps: true,
 })
 
+stockSchema.pre("save", function (next) {
+  console.log("Before saving data");
 
-productSchema.pre('save', function (next) {
-  //this -> 
-  console.log(' Before saving data');
   if (this.quantity == 0) {
-    this.status = 'out-of-stock'
+    this.status = "out-of-stock";
   }
-
-  next()
-})
-
+  next();
+});
 
 const Stock = mongoose.model('Stock', stockSchema)
-
 module.exports = Stock;
