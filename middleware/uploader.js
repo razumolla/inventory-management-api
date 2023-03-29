@@ -1,6 +1,8 @@
 const multer = require("multer");
 const path = require("path");
 
+// const { GridFsStorage } = require('multer-gridfs-storage'); //for 
+
 const storage = multer.diskStorage({
     destination: "images/",
     filename: (req, file, cb)=> {
