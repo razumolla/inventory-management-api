@@ -91,6 +91,7 @@ const userSchema = mongoose.Schema(
     }
   );
 
+    // save password to database as a hash password
   userSchema.pre("save", function (next) {
     if (!this.isModified("password")) {
       //  only run if password is modified, otherwise it will change every time we save the user!
@@ -105,6 +106,13 @@ const userSchema = mongoose.Schema(
   
     next();
   });
+
+    // compare userpassword and database hash password
+  userSchema.methods.comparePassword = function (password, hash) {
+    const isPasswordValid = bcrypt.compareSync(password, hash);
+    return isPasswordValid;
+  };
+  
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
